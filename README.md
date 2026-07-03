@@ -1,6 +1,6 @@
-# Wobb Frontend Assignment
+# Wobb Influencer Search Assignment
 
-A starter influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project is intentionally left in a rough-but-working state for candidates to improve.
+This is the completed frontend assignment for building a polished influencer discovery experience with search, profile details, and a persistent shortlist feature.
 
 ## Getting Started
 
@@ -8,73 +8,40 @@ A starter influencer search application built with **React**, **TypeScript**, **
 npm install
 npm run dev
 ```
-
 Open [http://localhost:5173](http://localhost:5173) to view the app.
 
-## What's Included
+To run tests:
+```bash
+npm run test
+```
 
-- **Search / Dashboard** — filter influencers by platform (Instagram, YouTube, TikTok) and search by username or full name
-- **Profile Details** — click a profile to view extended data loaded from individual JSON files
-- **Routing** — `react-router-dom` with `/` (search) and `/profile/:username` (details)
+## What Was Changed
 
-Sample data lives in:
+1. **Bug Fixes & Error Handling**: Fixed issues with missing user details, empty metrics, and broken image URLs by implementing graceful fallbacks. Wrote a node script to download external avatars locally to bypass 403 Forbidden hotlinking blocks.
+2. **UI/UX Redesign**: Replaced the entire interface with a modern, premium aesthetic. Introduced a responsive CSS grid, cohesive button classes (`.btn`), beautiful empty states, hover interactions, and utilized the native View Transitions API for seamless cross-fade page routing.
+3. **State Management**: Completely ripped out the old React Context API and replaced it with a Zustand store.
+4. **Select Profile & Add to List**: Implemented the persistent shortlist feature using `zustand/middleware` for `localStorage`. Handled duplicates, toggles, and deletion.
+5. **Code Quality**: Cleaned up the TypeScript interfaces in `types/index.ts`, separated concerns into reusable components (`ProfileCard.tsx`, `PlatformFilter.tsx`), and enforced standard React patterns.
+6. **Testing**: Integrated Vitest and React Testing Library and wrote unit tests for the Zustand store and core components.
 
-- `src/assets/data/search/` — platform search results (10 profiles each)
-- `src/assets/data/profiles/` — detailed profile JSON per username
+## Libraries Added
 
-## How to Submit
+- **Zustand**: Used for lightweight, fast, and un-opinionated state management (replacing React Context).
+- **Vitest & React Testing Library**: Used for setting up a robust unit testing environment.
+- **jsdom**: Used to simulate the browser environment for Vitest.
 
-1. **Download or clone** this starter project to your machine.
-2. **Create a new repository** on your own GitHub account. Do not fork the original assignment repo — push your work to a repo you own.
-3. Complete the tasks below and push your changes to that repository.
-4. **Share the public GitHub repository URL** with us as your submission.
+## Assumptions Made
 
-### Deadline (strict)
+- **Local Data Only**: We assumed that the local JSON mock data is the only data source needed, and we shouldn't attempt to build an actual backend fetch implementation.
+- **Platform Images**: We assumed it is acceptable to host the provided profile pictures locally (`public/images/`) rather than trying to hotlink directly to Google/YouTube CDNs, which are strictly CORS/403 protected.
 
-- **Due:** **2 July 2026, 2:00 PM IST** (Indian Standard Time, UTC+5:30)
-- **Any git commits made after this deadline will disqualify your submission.** We will only consider the repository state as of the deadline; late commits will not be reviewed.
-- Make sure your final work is pushed **before** the cutoff.
+## Trade-offs
 
-## AI Usage
+- **Static vs Dynamic Searching**: Because we are filtering a relatively small local JSON dataset, we opted to filter the data completely synchronously on the client side on every keystroke. For a production app with millions of users, this would need to be debounced and sent as an API query.
+- **Tailwind Config**: We opted to stick with Tailwind v4 (the default in the repo) and build custom CSS utility classes in `index.css` rather than installing heavy external component libraries (like MUI or Radix) to keep the bundle size small and maintain full visual control.
 
-You may use any AI tools (Cursor, ChatGPT, Claude, GitHub Copilot, etc.). We are evaluating your final solution and engineering decisions.
+## Any Remaining Improvements
 
-## Your Tasks
-
-Complete the following as part of your submission:
-
-1. **Find and fix all bugs and quality issues** — the codebase contains intentional bugs and quality issues. Identify and resolve them.
-
-2. **Completely redesign the UI/UX** — replace the basic layout with a polished, modern interface. Focus on usability, visual hierarchy, and delight.
-
-3. **Replace React Context with Zustand** — when you implement state management for the selected list, use [Zustand](https://github.com/pmndrs/zustand) instead of React Context.
-
-4. **Implement "Select profile & Add to List"** — the disabled "Add to List" button is a stub. Build the full feature:
-   - Select / add profiles to a persistent list
-   - View and manage the selected list
-   - Handle duplicates appropriately
-
-5. **Improve code quality and project structure** — refactor as needed, add proper types, and follow React best practices.
-
-6. **Optimize performance** — apply sensible optimizations where appropriate.
-
-7. **Use any libraries you need** — you are not limited to the current stack. Choose tools that help you deliver a great result (UI kits, state managers, testing libraries, etc.).
-
-## Scripts
-
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm run dev`  | Start development server |
-| `npm run build`| Production build         |
-| `npm run lint` | Run ESLint               |
-
-## Submission Notes
-
-- Document any assumptions or trade-offs in your README
-- Ensure `npm run build` passes before submitting
-- Focus on demonstrating your judgment — not every possible feature needs to be built, but the core assignment items should be addressed thoughtfully
-- Double-check that your repo is public (or that we have access) and that the link is included in your submission
-- Please make meaningful commits throughout your work. We may review your commit history.
-- **Bonus:** Deploying the app (e.g. Vercel, Netlify, GitHub Pages) is optional but will be considered a plus — include the live URL in your submission if you do
-
-Good luck!
+- **End-to-End Testing**: Adding Playwright or Cypress for complete E2E testing of the user flows.
+- **Accessibility**: While we use semantic HTML and great color contrast, the app could benefit from stricter ARIA labels and robust keyboard navigation indexing for complete ADA compliance.
+- **Data Fetching Abstraction**: Abstracting the local JSON imports into a mock API service (like MSW - Mock Service Worker) to better simulate a real-world network delay and loading states.

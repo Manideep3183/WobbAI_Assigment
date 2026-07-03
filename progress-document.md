@@ -29,11 +29,21 @@ A frontend assignment for building a polished influencer discovery experience wi
 - Added graceful fallback behavior for profiles without dedicated JSON detail files.
 - Prevented runtime crashes caused by unexpected profile data.
 
-### 6. Image Handling
+### 7. UI Polish & Refinements (Recent Updates)
+- Increased the layout max-width for better desktop utilization (1440px).
+- Standardized buttons globally (sizes, padding, colors) for an eye-catchy, consistent feel.
+- Enlarged the platform filter toggle buttons and search bar for better prominence.
+- Transitioned the profile list to a responsive CSS grid, rendering 4 square-shaped profile cards per row on large displays.
+- Expanded the profile details view to dynamically render extra JSON metrics (Gender, Age Group, Language, Total Likes, Avg Saves, Avg Shares) while hiding empty fallback stats.
+- Added native cross-fade View Transitions API for a premium feel when navigating between the search and profile pages.
+
+### 8. Image Handling
 - Added fallback behavior for profile images that fail to load.
 - Prevented broken image states by showing a local placeholder/avatar fallback.
+- Wrote an automated node script to download external profile avatars locally.
+- Replaced blocked/broken YouTube avatars with custom uploaded and locally hosted images.
 
-### 7. Quality and Verification
+### 9. Quality and Verification
 - Fixed several code quality issues and improved component structure.
 - Verified the application with:
   - npm run lint
@@ -43,11 +53,9 @@ A frontend assignment for building a polished influencer discovery experience wi
 The core assignment requirements are implemented and functioning.
 
 ## Remaining Optional Enhancements
-- Add subtle animations and transitions.
 - Improve accessibility further.
 - Add tests.
 - Add a deployment preview.
-- Replace remote image sources with more reliable local assets if needed.
 
 ## Notes
 The project uses local mock data for the influencer search experience, which is appropriate for a frontend assignment and helps simulate realistic content without needing a real backend.

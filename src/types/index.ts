@@ -36,6 +36,13 @@ export interface FullUserProfile extends UserProfileSummary {
   avg_reels_plays?: number;
   gender?: string;
   age_group?: string;
+  language?: {
+    code: string;
+    name: string;
+  };
+  total_likes?: number;
+  avg_shares?: number;
+  avg_saves?: number;
 }
 
 export interface ProfileDetailResponse {
