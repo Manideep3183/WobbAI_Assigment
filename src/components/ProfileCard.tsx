@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Platform, UserProfileSummary } from "@/types";
+import { useSelectedProfilesStore } from "@/store/selectedProfilesStore";
 import { VerifiedBadge } from "./VerifiedBadge";
 
 interface ProfileCardProps {
@@ -22,35 +24,61 @@ export function ProfileCard({
   onProfileClick,
 }: ProfileCardProps) {
   const navigate = useNavigate();
+  const { isSelected, toggleProfile } = useSelectedProfilesStore();
+  const [imageError, setImageError] = useState(false);
+  const profileIdentity =
+    profile.username ?? profile.handle ?? profile.fullname ?? profile.user_id;
+  const selected = isSelected(profileIdentity);
 
   const handleClick = () => {
-    if (onProfileClick) onProfileClick(profile.username);
-    navigate(`/profile/${profile.username}?platform=${platform}`);
+    const username = profileIdentity;
+    if (onProfileClick) onProfileClick(username);
+    navigate(`/profile/${encodeURIComponent(username)}?platform=${platform}`);
+  };
+
+  const handleAddToList = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    toggleProfile(profile);
   };
 
   return (
     <div
       onClick={handleClick}
-      className="flex items-center gap-3 p-3 border border-gray-300 mb-2 cursor-pointer hover:bg-gray-50 w-[700px]"
+      className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md"
       data-search={searchQuery}
     >
-      <img src={profile.picture} className="w-12 h-12 rounded-full" />
-      <div className="text-left flex-1">
-        <div className="font-bold">
-          @{profile.username}
+      <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-slate-200 text-sm font-semibold text-slate-600">
+        {!imageError && profile.picture ? (
+          <img
+            src={profile.picture}
+            alt={profile.fullname}
+            className="h-full w-full object-cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <span>{profile.fullname?.slice(0, 2).toUpperCase() || "U"}</span>
+        )}
+      </div>
+      <div className="flex-1 text-left">
+        <div className="font-semibold text-slate-900">
+          @{profileIdentity}
           <VerifiedBadge verified={profile.is_verified} />
         </div>
-        <div className="text-sm text-gray-600">{profile.fullname}</div>
-        <div className="text-sm">{formatFollowersLocal(profile.followers)}</div>
+        <div className="text-sm text-slate-600">{profile.fullname}</div>
+        <div className="text-sm text-slate-500">
+          {formatFollowersLocal(profile.followers)}
+        </div>
       </div>
-      {/* TODO: candidates must implement Add to List feature */}
-      {/* TODO: candidates must implement Add to List feature */}
       <button
-        disabled
-        className="px-3 py-1 bg-gray-300 text-gray-500 text-sm rounded cursor-not-allowed"
-        onClick={(e) => e.stopPropagation()}
+        type="button"
+        className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+          selected
+            ? "bg-violet-600 text-white shadow-sm"
+            : "bg-slate-100 text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+        }`}
+        onClick={handleAddToList}
       >
-        Add to List
+        {selected ? "Selected" : "Add to List"}
       </button>
     </div>
   );
