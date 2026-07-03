@@ -1,5 +1,7 @@
 # Wobb Influencer Search Assignment
 
+**Live Demo:** [https://wobb-ai-assigment.vercel.app](https://wobb-ai-assigment.vercel.app)
+
 This is the completed frontend assignment for building a polished influencer discovery experience with search, profile details, and a persistent shortlist feature.
 
 ## Getting Started
